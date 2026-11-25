@@ -150,32 +150,40 @@ on conflict (section_key) do nothing;
 create or replace function public.is_admin()
 returns boolean
 language sql
-security definer
+security invoker
 stable
 set search_path = public
 as $$
     select exists (
         select 1
         from public.missionaries
-        where auth_user_id = auth.uid()
+        where auth_user_id = (select auth.uid())
           and app_role = 'admin'
     )
-    or coalesce(auth.jwt() ->> 'email', '') = 'admin@zonehub.pgmissionaries.internal';
+    or coalesce((select auth.jwt()) ->> 'email', '') = 'admin@zonehub.pgmissionaries.internal';
 $$;
 
 -- Increments a missionary's cookie count atomically.
 create or replace function public.add_cookie(p_missionary_id uuid)
 returns void
-language sql
-security definer
+language plpgsql
+security invoker
 set search_path = public
 as $$
+begin
+    if (select auth.uid()) is null then
+        raise exception 'Not authenticated';
+    end if;
     update public.missionaries
     set cookies = coalesce(cookies, 0) + 1
     where id = p_missionary_id;
+end;
 $$;
 
+revoke execute on function public.is_admin() from public, anon;
 grant execute on function public.is_admin() to authenticated;
+
+revoke execute on function public.add_cookie(uuid) from public, anon;
 grant execute on function public.add_cookie(uuid) to authenticated;
 
 -- -----------------------------------------------------------------------------

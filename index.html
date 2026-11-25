@@ -1521,8 +1521,8 @@
     // --- SUPABASE CONFIGURATION ---
     // The anon key is safe to ship client-side -- every table it can touch is
     // locked down by Row Level Security policies on the database side.
-    const SUPABASE_URL = "https://slqdajsrbrvijjzgrqdh.supabase.co";
-    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNscWRhanNyYnJ2aWpqemdycWRoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc0MTk3NTEsImV4cCI6MjEwMjk5NTc1MX0.5cF_iVSduMn2HMhEG_g0sG4eDjRVdvuy7kIMjrSTKIo";
+    const SUPABASE_URL = "https://nxdsmnrhmelxitbuzugi.supabase.co";
+    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im54ZHNtbnJobWVseGl0YnV6dWdpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTU2MzkyNDAsImV4cCI6MjExMTIxNTI0MH0.rt7Hyxd9dnVJ2LXa8FzmXYnQwNDdGbAGSIeI4h8TDJA";
     const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
         auth: { persistSession: true, autoRefreshToken: true }
     });
