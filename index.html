@@ -1841,6 +1841,12 @@
 
         state.me = meRes.data ?? null;
         state.isAdmin = state.me?.app_role === "admin";
+        if (!state.isAdmin) {
+            const { data: sessionData } = await db.auth.getSession();
+            if (sessionData?.session?.user?.email === ADMIN_LOGIN_EMAIL) {
+                state.isAdmin = true;
+            }
+        }
         state.missionaries = missRes.data ?? [];
         state.leadership = leadRes.data ?? [];
         state.serviceSites = sitesRes.data ?? [];
